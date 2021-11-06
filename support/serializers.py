@@ -1,11 +1,10 @@
 from rest_framework import serializers
 
-from .models import Task, Answer, User
-
+from .models import Task, Answer, Status
 
 
 class TaskSerializer (serializers.ModelSerializer):
-
+    "Задание"
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     status = serializers.SlugRelatedField(slug_field='status_name', read_only=True)
 
@@ -15,32 +14,15 @@ class TaskSerializer (serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TaskCreateSerializer (serializers.ModelSerializer):
-
-    class Meta:
-
-        model = Task
-        fields = [
-            'author',
-            'text',
-        ]
-
-
-class TaskUpdateSerializer (serializers.ModelSerializer):
-
-    class Meta:
-
-        model = Task
-        fields =[
-            'status',
-        ]
-
-
 class AnswerCreateSerializer (serializers.ModelSerializer):
     """Добавление ответа"""
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    task = serializers.SlugRelatedField(slug_field='id', queryset=Task.objects.all())
+    parent = serializers.SlugRelatedField(slug_field='id', queryset= Answer.objects.all(), allow_null=True)
+
     class Meta:
         model = Answer
-        fields = ('task', 'author', 'text', 'parent')
+        fields = '__all__'
 
 
 class RecursiveSerializer (serializers.Serializer):
@@ -60,7 +42,7 @@ class FilterAnswerListSerializer (serializers.ListSerializer):
 class AnswerSerializer (serializers.ModelSerializer):
     """Вывод ответа"""
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
-    children = RecursiveSerializer(many=True)
+    children = RecursiveSerializer(many=True,read_only=True)
 
     class Meta:
         list_serializer_class = FilterAnswerListSerializer
@@ -70,10 +52,11 @@ class AnswerSerializer (serializers.ModelSerializer):
 
 class TaskDetailSerializer(serializers.ModelSerializer):
     """Детали задания"""
-    status = serializers.SlugRelatedField(slug_field='status_name', read_only=True)
+    status = serializers.SlugRelatedField(slug_field='status_name', queryset=Status.objects.all())
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
-    answer = AnswerSerializer(many=True)
+    answer = AnswerSerializer(many=True,read_only=True)
 
     class Meta:
         model = Task
         fields = '__all__'
+
