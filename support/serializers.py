@@ -19,6 +19,7 @@ class TaskUpdateSerializer (serializers.ModelSerializer):
     status = serializers.SlugRelatedField(slug_field='status_name', queryset=Status.objects.all())
 
     class Meta:
+
         model = Task
         fields = ['status']
 
@@ -32,6 +33,7 @@ class AnswerCreateSerializer (serializers.ModelSerializer):
                                           allow_null=True, default= None)
 
     class Meta:
+
         model = Answer
         fields = '__all__'
 
@@ -56,6 +58,7 @@ class AnswerSerializer (serializers.ModelSerializer):
     children = RecursiveSerializer(many=True,read_only=True)
 
     class Meta:
+
         list_serializer_class = FilterAnswerListSerializer
         model = Answer
         fields = ('id', 'author', 'text', 'children')
@@ -68,6 +71,6 @@ class TaskDetailSerializer(serializers.ModelSerializer):
     answer = AnswerSerializer(many=True,read_only=True)
 
     class Meta:
+
         model = Task
         fields = '__all__'
-

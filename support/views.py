@@ -7,7 +7,7 @@ from .serializers import TaskSerializer, TaskDetailSerializer, AnswerCreateSeria
 
 class TaskList (ListCreateAPIView):
 
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by('-id')
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
