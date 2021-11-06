@@ -14,11 +14,22 @@ class TaskSerializer (serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TaskUpdateSerializer (serializers.ModelSerializer):
+
+    status = serializers.SlugRelatedField(slug_field='status_name', queryset=Status.objects.all())
+
+    class Meta:
+        model = Task
+        fields = ['status']
+
+
 class AnswerCreateSerializer (serializers.ModelSerializer):
     """Добавление ответа"""
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     task = serializers.SlugRelatedField(slug_field='id', queryset=Task.objects.all())
-    parent = serializers.SlugRelatedField(slug_field='id', queryset= Answer.objects.all(), allow_null=True)
+    parent = serializers.SlugRelatedField(slug_field='id',
+                                          queryset= Answer.objects.all(),
+                                          allow_null=True, default= None)
 
     class Meta:
         model = Answer
