@@ -1,22 +1,46 @@
 from rest_framework import serializers
-from .models import Task, Answer
+
+from .models import Task, Answer, User
 
 
-class TaskListSerializer (serializers.ModelSerializer):
-    """Список заданий"""
+
+class TaskSerializer (serializers.ModelSerializer):
+
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     status = serializers.SlugRelatedField(slug_field='status_name', read_only=True)
 
     class Meta:
+
         model = Task
-        fields = ('author', 'text', 'status')
+        fields = '__all__'
+
+
+class TaskCreateSerializer (serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Task
+        fields = [
+            'author',
+            'text',
+        ]
+
+
+class TaskUpdateSerializer (serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Task
+        fields =[
+            'status',
+        ]
 
 
 class AnswerCreateSerializer (serializers.ModelSerializer):
     """Добавление ответа"""
     class Meta:
         model = Answer
-        fields = ('task', 'author', 'text')
+        fields = ('task', 'author', 'text', 'parent')
 
 
 class RecursiveSerializer (serializers.Serializer):
@@ -41,7 +65,7 @@ class AnswerSerializer (serializers.ModelSerializer):
     class Meta:
         list_serializer_class = FilterAnswerListSerializer
         model = Answer
-        fields = ('author', 'text', 'children')
+        fields = ('id', 'author', 'text', 'children')
 
 
 class TaskDetailSerializer(serializers.ModelSerializer):
@@ -53,10 +77,3 @@ class TaskDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-
-
-class TaskCreateSerializer (serializers.ModelSerializer):
-    """Добавление ответа"""
-    class Meta:
-        model = Task
-        fields = ('author', 'text')

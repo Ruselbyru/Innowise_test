@@ -1,10 +1,18 @@
 from django.urls import path
-from .views import TaskListView, TaskDetailView, AnswerCreateView, TaskCreateView
+from .views import (
+    TaskListAPIView,
+    TaskCreateAPIView,
+    TaskUpdateAPIView,
+    TaskDetailAPIView,
+    AnswerCreateAPIView,
+)
 
 urlpatterns = [
-    path('task/', TaskListView.as_view(), name = 'tasks'),
-    path('task/<int:id>', TaskDetailView.as_view(), name = 'task'),
-    path('answer/', AnswerCreateView.as_view(), name = 'answer'),
-    path('create/', TaskCreateView.as_view(), name = 'create'),
+
+    path ('task/', TaskListAPIView.as_view(), name='task_list'),
+    path('task/<int:id>/', TaskDetailAPIView.as_view(), name = 'task'),
+    path ('create_task/', TaskCreateAPIView.as_view(), name='create_task'),
+    path ('update_task/<int:id>/', TaskUpdateAPIView.as_view(), name='update_task'),
+    path ('create_answer/', AnswerCreateAPIView.as_view(), name = 'create_answer'),
 
 ]
