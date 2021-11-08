@@ -9,6 +9,8 @@ djangorestframework = "*"
 psycopg2 = "*"
 pillow = "*"
 pygments = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
