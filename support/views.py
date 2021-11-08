@@ -7,14 +7,13 @@ from django.shortcuts import get_object_or_404
 
 from support.models import Task, Answer
 from support.serializers import TaskSerializer, TaskDetailSerializer, AnswerCreateSerializer, TaskUpdateSerializer
-from support.permissions import IsOwnerOrReadOnly
 
 
 class TaskViewSet (ModelViewSet):
 
     queryset = Task.objects.all().order_by('-id')
     serializer_class = TaskSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def update(self, request, pk=None):
         queryset = Task.objects.get(pk=pk)

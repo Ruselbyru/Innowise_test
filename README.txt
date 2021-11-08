@@ -13,13 +13,13 @@ GET     127.0.0.1:8000/api/task/                                                
 POST   127.0.0.1:8000/auth/users                params{'username':'name', 'password':'123'} - создание учетной записи
        127.0.0.1:8000/token/                    params{'username':'name', 'password':'123'} - получение токена
        127.0.0.1:8000/api/task/                 headers{'Authorization': Bearer 'token'}
-                                                        params{'text':'text_task'} - добавление задачи
+                                                        params{'text':'text_task'}           - добавление задачи
        127.0.0.1:8000/api/create_answer/         headers{'Authorization': Bearer 'token'}
-                                                        params{'task':'id',
+                                                        params{'task':'id_task',
                                                                 'text':'text_answer',
-                                                                'parent':'id_answer'} - добавление ответа
+                                                                'parent':'id_answer'}          - добавление ответа
 
-PUT   127.0.0.1:8000/api/task/update/id_task    headers{'Authorization': Bearer 'token'}
+PUT   127.0.0.1:8000/api/task/id_task    headers{'Authorization': Bearer 'token'}
                                                         params{'status':'name_status'} - изменение статуса (только Админ.)
 
 
