@@ -4,7 +4,7 @@ from support.models import Task, Answer, Status
 
 
 class TaskSerializer (serializers.ModelSerializer):
-    "Task serializer"
+    """Task serializer"""
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     status = serializers.SlugRelatedField(slug_field='status_name', read_only=True)
 
@@ -15,7 +15,7 @@ class TaskSerializer (serializers.ModelSerializer):
 
 
 class TaskUpdateSerializer (serializers.ModelSerializer):
-    """Task update serializer"""
+
     status = serializers.SlugRelatedField(slug_field='status_name', queryset=Status.objects.all())
 
     class Meta:

@@ -1,32 +1,38 @@
 from rest_framework import permissions
-from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveAPIView,UpdateAPIView
+from rest_framework.response import Response
+from rest_framework.generics import CreateAPIView
+from rest_framework.viewsets import ModelViewSet
+
+from django.shortcuts import get_object_or_404
 
 from support.models import Task, Answer
 from support.serializers import TaskSerializer, TaskDetailSerializer, AnswerCreateSerializer, TaskUpdateSerializer
+from support.permissions import IsOwnerOrReadOnly
 
 
-class TaskList (ListCreateAPIView):
-    """Task list or create task view"""
+class TaskViewSet (ModelViewSet):
+
     queryset = Task.objects.all().order_by('-id')
     serializer_class = TaskSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def update(self, request, pk=None):
+        queryset = Task.objects.get(pk=pk)
+        serializer = TaskUpdateSerializer(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(status=400)
+
+    def retrieve(self, request, pk=None):
+        queryset = Task.objects.all()
+        task = get_object_or_404(queryset, pk=pk)
+        serializer = TaskDetailSerializer(task)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-
-class TaskDetail (RetrieveAPIView):
-    """Task detail view"""
-    queryset = Task.objects.all()
-    serializer_class = TaskDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class TaskUpdate (UpdateAPIView):
-    """Task update view"""
-    queryset = Task.objects.all()
-    serializer_class = TaskUpdateSerializer
-    permission_classes = [permissions.IsAdminUser]
 
 
 class AnswerCreate (CreateAPIView):
