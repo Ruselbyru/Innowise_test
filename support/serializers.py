@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from .models import Task, Answer, Status
+from support.models import Task, Answer, Status
 
 
 class TaskSerializer (serializers.ModelSerializer):
-    "Задание"
+    "Task serializer"
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     status = serializers.SlugRelatedField(slug_field='status_name', read_only=True)
 
@@ -15,7 +15,7 @@ class TaskSerializer (serializers.ModelSerializer):
 
 
 class TaskUpdateSerializer (serializers.ModelSerializer):
-
+    """Task update serializer"""
     status = serializers.SlugRelatedField(slug_field='status_name', queryset=Status.objects.all())
 
     class Meta:
@@ -25,7 +25,7 @@ class TaskUpdateSerializer (serializers.ModelSerializer):
 
 
 class AnswerCreateSerializer (serializers.ModelSerializer):
-    """Добавление ответа"""
+    """Answer create serializer"""
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     task = serializers.SlugRelatedField(slug_field='id', queryset=Task.objects.all())
     parent = serializers.SlugRelatedField(slug_field='id',
@@ -39,21 +39,21 @@ class AnswerCreateSerializer (serializers.ModelSerializer):
 
 
 class RecursiveSerializer (serializers.Serializer):
-    """Вывод рекурсивно только children"""
+    """Output recursive only children"""
     def to_representation(self, value):
         serializer = self.parent.parent.__class__(value, context = self.context)
         return serializer.data
 
 
 class FilterAnswerListSerializer (serializers.ListSerializer):
-    """Фильтр ответов - только parents"""
+    """Filter answers - only parents"""
     def to_representation(self, data):
         data = data.filter(parent=None)
         return super().to_representation(data)
 
 
 class AnswerSerializer (serializers.ModelSerializer):
-    """Вывод ответа"""
+    """Answer serializer"""
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     children = RecursiveSerializer(many=True,read_only=True)
 
@@ -65,7 +65,7 @@ class AnswerSerializer (serializers.ModelSerializer):
 
 
 class TaskDetailSerializer(serializers.ModelSerializer):
-    """Детали задания"""
+    """Task detail serializer"""
     status = serializers.SlugRelatedField(slug_field='status_name', queryset=Status.objects.all())
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
     answer = AnswerSerializer(many=True,read_only=True)

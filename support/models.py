@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class Status (models.Model):
@@ -12,7 +12,7 @@ class Status (models.Model):
 
 class Task (models.Model):
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, default=2)
     text = models.TextField('Task')
 
@@ -24,7 +24,7 @@ class Answer (models.Model):
 
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='answer')
     text = models.TextField('Answer')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     parent = models.ForeignKey(
         'self', on_delete=models.SET_NULL, blank=True, null=True, related_name='children'
     )

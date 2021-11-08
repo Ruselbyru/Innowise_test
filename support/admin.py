@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Status, Answer
+from support.models import Task, Status, Answer
 
 
 admin.site.register(Task)
