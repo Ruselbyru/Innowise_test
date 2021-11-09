@@ -11,6 +11,7 @@ pillow = "*"
 pygments = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

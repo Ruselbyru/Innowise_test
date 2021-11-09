@@ -1,10 +1,16 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-4gel)wl8wv&-%gsvdqc_5%%!e0p$z49981z9ee7@c7!w#pswmx'
+load_dotenv()
+env_path = Path('.')/'.env'
+load_dotenv(dotenv_path=env_path)
+
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 DEBUG = True
@@ -60,9 +66,9 @@ WSGI_APPLICATION = 'Innowise_support.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Innowise',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
+        'NAME': os.getenv('NAME_DB'),
+        'USER': os.getenv('USER_DB'),
+        'PASSWORD': os.getenv('PASSWORD_DB'),
         'HOST': 'localhost',
         'PORT': '5433',
     }
