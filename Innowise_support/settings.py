@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
@@ -63,14 +63,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Innowise_support.wsgi.application'
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.getenv('NAME_DB'),
+#         'USER': os.getenv('USER_DB'),
+#         'PASSWORD': os.getenv('PASSWORD_DB'),
+#         'HOST': 'localhost',
+#         'PORT': '5433',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('NAME_DB'),
         'USER': os.getenv('USER_DB'),
         'PASSWORD': os.getenv('PASSWORD_DB'),
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': 5432,
     }
 }
 

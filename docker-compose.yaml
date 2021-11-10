@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  database:
+    image: postgres:14
+    volumes:
+      - postgres_data:/Innowise_support/postgresql/data/
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/Innowise_support/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env
+    depends_on:
+      - database
+
+volumes:
+  postgres_data:
