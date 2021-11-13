@@ -9,11 +9,12 @@ from support.models import Task, Answer
 from support.serializers import TaskSerializer, TaskDetailSerializer, AnswerCreateSerializer, TaskUpdateSerializer
 
 
+
 class TaskViewSet (ModelViewSet):
 
     queryset = Task.objects.all().order_by('-id')
     serializer_class = TaskSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def update(self, request, pk=None):
         queryset = Task.objects.get(pk=pk)
@@ -32,6 +33,11 @@ class TaskViewSet (ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def get_permissions(self):
+        if self.request.method == 'PUT':
+            self.permission_classes = [permissions.IsAdminUser]
+        return super(TaskViewSet, self).get_permissions()
 
 
 class AnswerCreate (CreateAPIView):

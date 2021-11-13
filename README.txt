@@ -8,7 +8,7 @@
 
 API:
 GET     127.0.0.1:8000/api/task/                                                           - список текущих задач
-        127.0.0.1:8000/api/task/id_task         headers{'Authorization': Bearer 'token'}  - просмотр деталей задачи
+        127.0.0.1:8000/api/task/id_task                                                     - просмотр деталей задачи
 
 POST   127.0.0.1:8000/auth/users                params{'username':'name', 'password':'123'} - создание учетной записи
        127.0.0.1:8000/token/                    params{'username':'name', 'password':'123'} - получение токена
