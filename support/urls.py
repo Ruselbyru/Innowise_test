@@ -8,15 +8,10 @@ router = DefaultRouter()
 router.register(r'task', TaskViewSet)
 
 
-task_update = TaskViewSet.as_view({
-    'put':'update',
-})
-
 
 urlpatterns = [
 
     path('', include(router.urls)),
-    path ('task/<int:pk>/', task_update),
     path ('create_answer/', AnswerCreate.as_view(), name = 'create_answer'),
 
 ]
